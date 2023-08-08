@@ -8,12 +8,7 @@ class UserForm extends React.Component {
     super(props);
     //fix, have to use map or something to initialize all keys to "" instead of hardcoding fields
     this.state = {
-        contactInfo: {
-            field1: "",
-            field2: "",
-            field3: "",
-            field4: "",
-        },
+        contactInfo: {},
         error: null
     }
     this.formID = this.props.formID;
@@ -76,11 +71,11 @@ class UserForm extends React.Component {
             .post("http://localhost:8000/wel/", {
                 detail: this.state.contactInfo,
             })
-            // .then((res) => {
-            //     this.setState(prevState => ({
-            //         contactInfo:{ ...this.state.contactInfo, [event.target.name]: "" }
-            //     }));
-            // })
+            .then((res) => {
+                this.setState(prevState => ({
+                    contactInfo:{ ...this.state.contactInfo, [event.target.name]: "" }
+                }));
+            })
             .catch((err) => {});
     }
     console.log(this.state.contactInfo);
@@ -92,7 +87,7 @@ class UserForm extends React.Component {
         type={this.formTemplate[x]["type"]}
         name={x}
         placeholder={this.formTemplate[x]["placeholder"]}
-        value={this.state.contactInfo[x]}
+        value={this.state.contactInfo[x] || ""}
         onChange={this.handleChange}
         />
     </div>
