@@ -1,0 +1,77 @@
+1. python3 -m pip install --user virtualenv
+2. python3 -m venv env
+3. cd env
+4. source bin/activate
+5. pip install following packages: django, djangorestframework
+6. python -m pip install django-cors-headers
+7. django-admin startproject pensiondjango
+8. cd pensiondjango
+9. django-admin startapp core
+
+10. models.py:
+from django.db import models
+  
+# Create your models here.
+  
+  
+class React(models.Model):
+    name = models.CharField(max_length=30)
+    detail = models.JSONField("ContactInfo")
+
+
+11. Create serializer.py inside core folder
+
+from rest_framework import serializers
+from . models import *
+  
+class ReactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = React
+        fields = ['detail']
+
+12. views.py
+from django.shortcuts import render
+from rest_framework.views import APIView
+from . models import *
+from rest_framework.response import Response
+from . serializer import *
+# Create your views here.
+  
+class ReactView(APIView):
+    
+    serializer_class = ReactSerializer
+  
+    def get(self, request):
+        # print([details.detail for details in React.objects.all()])
+        detail = [ {"field1": detail_object.detail['field1'], "field2": detail_object.detail['field2'], "field3": detail_object.detail['field3'], "field4": detail_object.detail['field4']} 
+        for detail_object in React.objects.all()]
+        return Response(detail)
+  
+    def post(self, request):
+  
+        serializer = ReactSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return  Response(serializer.data)
+
+13. urls.py
+from django.contrib import admin
+from django.urls import path, include
+from core.views import *
+  
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('wel/', ReactView.as_view(), name="something"),
+]
+
+14. in settings.py, make following changes: 
+    a. Add rest_framework , core, corsheaders  to INSTALLED APPS
+    b. Add corsheaders.middleware.CorsMiddleware to MIDDLEWARE list.
+    c. Create  a dictionary assigned to REST_FRAMEWORK variable in which insert ‘DEFAULT_PERMISSION_CLASSES’: [   ‘rest_framework.permissions.AllowAny’ ]
+    d. Assign variable CORS_ORIGIN_ALLOW_ALL = True
+
+15. python manage.py makemigrations
+16. python manage.py migrate
+17. (to create superuser who will be the admin of the whole app) python manage.py createsuperuser --email admin@example.com --username admin 
+18. python manage.py runserver
+19. go to localhost:8000/wel/
