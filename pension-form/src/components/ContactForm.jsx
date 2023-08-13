@@ -34,7 +34,7 @@ class UserForm extends React.Component {
   componentDidMount() {
     let data;
     axios
-        .get("http://localhost:8000/wel/")
+        .get("http://localhost:8000/userform/")
         .then((res) => {
             data = JSON.parse(res).data;
             this.setState({
@@ -68,7 +68,7 @@ class UserForm extends React.Component {
         console.log("Submitted!");
   
         axios
-            .post("http://localhost:8000/wel/", {
+            .post("http://localhost:8000/userform/", {
                 detail: this.state.contactInfo,
             })
             .then((res) => {

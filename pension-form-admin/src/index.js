@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ReactFormBuilder } from 'react-form-builder2';
-import DemoBar from './demobar';
+// import DemoBar from './demobar';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import * as variables from './variables';
@@ -36,12 +36,12 @@ ReactDOM.render(
 //   </React.StrictMode>,
 // );
 
-ReactDOM.render(
-  <React.StrictMode>
-    <DemoBar variables={variables} />
-  </React.StrictMode>,
-  document.getElementById('demo-bar')
-);
+// ReactDOM.render(
+//   <React.StrictMode>
+//     <DemoBar variables={variables} />
+//   </React.StrictMode>,
+//   document.getElementById('demo-bar')
+// );
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
